@@ -1,0 +1,53 @@
+﻿<Application
+    x:Class="PassManager.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:PassManager"
+    StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <Style x:Key="IconButtons" TargetType="Button">
+                <Setter Property="Width" Value="40" />
+                <Setter Property="Height" Value="40" />
+                <Setter Property="Margin" Value="5,0" />
+                <Setter Property="Padding" Value="8" />
+                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+            </Style>
+
+            <Style x:Key="EditorPanel" TargetType="Border">
+                <Setter Property="Margin" Value="5" />
+                <Setter Property="Padding" Value="5" />
+                <Setter Property="Background" Value="LightGray" />
+                <Setter Property="BorderBrush" Value="Black" />
+                <Setter Property="BorderThickness" Value="1" />
+            </Style>
+
+
+            <Style x:Key="Icon" TargetType="Path">
+                <Setter Property="Stroke" Value="Black" />
+                <Setter Property="StrokeThickness" Value="2" />
+                <Setter Property="Stretch" Value="Uniform" />
+            </Style>
+
+            <Path
+                x:Key="Search"
+                Data="M14.9536 14.9458L21 21M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z"
+                Style="{StaticResource Icon}" />
+            <Path
+                x:Key="Plus"
+                Data="M 0 0 L 0 14 M -7 7 L 7 7"
+                Style="{StaticResource Icon}" />
+            <Path
+                x:Key="Key"
+                Data="M10 14.0505C9.36474 13.4022 8.47934 13 7.5 13C5.567 13 4 14.567 4 16.5C4 18.433 5.567 20 7.5 20C9.433 20 11 18.433 11 16.5C11 15.5463 10.6186 14.6817 10 14.0505ZM10 14.0505L15.0316 9.01891M20.0505 7.99997L18.7576 6.70708C18.3671 6.31655 17.7339 6.31655 17.3434 6.70708L15.0316 9.01891M15.0316 9.01891L17 10.9873"
+                Style="{StaticResource Icon}" />
+
+            <!--<Path
+                x:Key="Plus"
+                Data="M 0 0 L 0 14 M -7 7 L 7 7"
+                Style="{StaticResource Icon}" />-->
+
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
