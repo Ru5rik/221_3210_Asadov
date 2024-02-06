@@ -1,4 +1,6 @@
-﻿using PassManager.Classes;
+﻿//#define NORMAL
+
+using PassManager.Classes;
 using PassManager.Pages;
 using System.ComponentModel;
 using System.Windows;
@@ -16,24 +18,25 @@ namespace PassManager
 			InitializeComponent();
 
 			_storage = new ItemsStorage();
-
-			//if (System.Diagnostics.Debugger.IsAttached)
-			//{
-			//	MessageBox.Show("Обнаружен отладчик!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-			//	Close();
-			//}
-			//else
-			//{
-			//	ViewUtils.MainFrame = MainFrame;
-			//	ViewUtils.MainFrame.Navigate(new LoginPage());
-			//}
-
-
-
+#if NORMAL
+			// Проверка на дебагер
+			if (System.Diagnostics.Debugger.IsAttached)
+			{
+				MessageBox.Show("Обнаружен отладчик!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+				Close();
+			}
+			else
+			{
+				ViewUtils.MainFrame = MainFrame;
+				ViewUtils.MainFrame.Navigate(new LoginPage(_storage));
+			}
+#else
 			ViewUtils.MainFrame = MainFrame;
 			ViewUtils.MainFrame.Navigate(new LoginPage(_storage));
+#endif
 		}
 
+		// Сохранение данных при закрытии
 		protected override void OnClosing(CancelEventArgs e)
 		{
 			_storage.Save();

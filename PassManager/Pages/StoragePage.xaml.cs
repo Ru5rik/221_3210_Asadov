@@ -1,19 +1,7 @@
 ﻿using PassManager.Classes;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace PassManager.Pages
 {
@@ -26,6 +14,10 @@ namespace PassManager.Pages
 		public ObservableCollection<ItemModel> Items { get; set; }
 		public ObservableObject<ItemModel> NewItem { get; set; }
 		private ItemModel editable;
+		/// <summary>
+		/// Конструктор страницы с паролями. Принимает объект хранилища.
+		/// </summary>
+		/// <param name="storage"></param>
 		public StoragePage(ItemsStorage storage)
 		{
 			InitializeComponent();
@@ -37,7 +29,9 @@ namespace PassManager.Pages
 
 			DataContext = this;
 		}
-
+		/// <summary>
+		/// Поиск элементов по ссылке на сайт.
+		/// </summary>
 		private void SearchClick(object sender, RoutedEventArgs e)
 		{
 			Items.Clear();
@@ -49,7 +43,9 @@ namespace PassManager.Pages
 				_storage.Items.ForEach(Items.Add);
 			}
 		}
-
+		/// <summary>
+		/// Отображение панели для добавления нового пароля.
+		/// </summary>
 		private void AddClick(object sender, RoutedEventArgs e)
 		{
 			MasterEditor.Visibility = Visibility.Collapsed;
@@ -57,16 +53,18 @@ namespace PassManager.Pages
 
 			NewItem.Value = new ItemModel();
 		}
-
+		/// <summary>
+		/// Добавление нового пароля в хранилище.
+		/// </summary>
 		private void SaveClick(object sender, RoutedEventArgs e)
 		{
 			EditorGrid.Visibility = Visibility.Collapsed;
 
 			if (editable != null)
 			{
-				MessageBox.Show("Даныне обновлены", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+				MessageBox.Show("Данные обновлены", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
 
-				editable.Copy(NewItem.Value);
+				editable.Copy(NewItem.Value); // fix
 				int index = Items.IndexOf(editable);
 				Items.RemoveAt(index);
 				Items.Insert(index, editable);
@@ -77,14 +75,17 @@ namespace PassManager.Pages
 			{
 				MessageBox.Show("Новый пароль добавлен", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
 
-				ItemModel item = NewItem.Value;
+				ItemModel item = new ItemModel();
+				item.Copy(NewItem.Value);
 
 				_storage.Items.Add(item);
 				Items.Add(item);
 			}
-
+			NewItem.Value.Clear();
 		}
-
+		/// <summary>
+		/// Закрывает панели редактирования. 
+		/// </summary>
 		private void CancelClick(object sender, RoutedEventArgs e)
 		{
 			EditorGrid.Visibility = Visibility.Collapsed;
@@ -94,7 +95,9 @@ namespace PassManager.Pages
 			NewPass.Password = "";
 			NewPassSecond.Password = "";
 		}
-
+		/// <summary>
+		/// Проверка данных нового элемента.
+		/// </summary>
 		private void ValidateInput(object sender, TextChangedEventArgs e)
 		{
 			if (NewItem.Value.IsValidate)
@@ -106,12 +109,9 @@ namespace PassManager.Pages
 				SaveBtn.IsEnabled = false;
 			}
 		}
-
-		private void ItemClick(object sender, MouseButtonEventArgs e)
-		{
-			Clipboard.SetText(((ItemModel)((Border)sender).DataContext).Password);
-		}
-
+		/// <summary>
+		/// Обработчик контесткного меню. Также удаляет, копирует и производит настройку поля редактирования.
+		/// </summary>
 		private void MenuItemClick(object sender, RoutedEventArgs e)
 		{
 			MenuItem menu = sender as MenuItem;
@@ -133,22 +133,31 @@ namespace PassManager.Pages
 					{
 						_storage.Items.Remove(item);
 						Items.Remove(item);
-						MessageBox.Show("пароль удален", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+						MessageBox.Show("Пароль удален", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
 
 					}
 					break;
-				case "Copy":
-					Clipboard.SetText(item.Password);
+				case "CopyL":
+					Clipboard.SetText(item.GetLogin());
+					break;
+				case "CopyP":
+					Clipboard.SetText(item.GetPassword());
 					break;
 				default:
 					break;
 			}
 		}
+		/// <summary>
+		/// Отображение панели изменения пин кода.
+		/// </summary>
 		private void EditMasterClick(object sender, RoutedEventArgs e)
 		{
 			EditorGrid.Visibility = Visibility.Collapsed;
 			MasterEditor.Visibility = Visibility.Visible;
 		}
+		/// <summary>
+		/// Сохранение пин кода.
+		/// </summary>
 		private void SaveMasterClick(object sender, RoutedEventArgs e)
 		{
 			MasterEditor.Visibility = Visibility.Collapsed;
@@ -156,7 +165,9 @@ namespace PassManager.Pages
 			Properties.Settings.Default.Master = NewPass.Password;
 			Properties.Settings.Default.Save();
 		}
-
+		/// <summary>
+		/// Проверка пин кода.
+		/// </summary>
 		private void InputPasswordChanged(object sender, RoutedEventArgs e)
 		{
 			if (OldPass.Password != NewPass.Password && !string.IsNullOrWhiteSpace(NewPass.Password) && NewPass.Password == NewPassSecond.Password)
