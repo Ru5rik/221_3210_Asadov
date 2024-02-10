@@ -12,8 +12,6 @@ namespace PassManager.Classes
 		public ItemsStorage()
 		{
 			Items = new List<ItemModel>();
-
-			Load();
 		}
 		public void Load()
 		{

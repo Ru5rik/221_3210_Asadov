@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 
 namespace PassManager.Pages
 {
@@ -22,6 +23,7 @@ namespace PassManager.Pages
 		{
 			InitializeComponent();
 			_storage = storage;
+			_storage.Load();
 			Items = new ObservableCollection<ItemModel>();
 			NewItem = new ObservableObject<ItemModel>(new ItemModel());
 
@@ -170,7 +172,7 @@ namespace PassManager.Pages
 		/// </summary>
 		private void InputPasswordChanged(object sender, RoutedEventArgs e)
 		{
-			if (OldPass.Password != NewPass.Password && !string.IsNullOrWhiteSpace(NewPass.Password) && NewPass.Password == NewPassSecond.Password)
+			if (OldPass.Password != NewPass.Password && !string.IsNullOrWhiteSpace(OldPass.Password) && !string.IsNullOrWhiteSpace(NewPass.Password) && NewPass.Password == NewPassSecond.Password)
 			{
 				SaveMasterBtn.IsEnabled = true;
 			}
@@ -178,6 +180,11 @@ namespace PassManager.Pages
 			{
 				SaveMasterBtn.IsEnabled = false;
 			}
+		}
+
+		private void ItemMenuClick(object sender, RoutedEventArgs e)
+		{
+			//...
 		}
 	}
 }

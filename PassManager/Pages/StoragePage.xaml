@@ -7,8 +7,8 @@
     xmlns:local="clr-namespace:PassManager.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="StoragePage"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
+    d:DesignHeight="400"
+    d:DesignWidth="600"
     mc:Ignorable="d">
 
     <Grid>
@@ -40,7 +40,9 @@
             <TextBox
                 x:Name="SearchTextBox"
                 Grid.Column="2"
-                VerticalContentAlignment="Center" />
+                VerticalContentAlignment="Center"
+                FontSize="14"
+                Style="{DynamicResource TextBoxStyle}" />
             <Button
                 Grid.Column="3"
                 Click="SearchClick"
@@ -64,7 +66,7 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <TextBlock
-                    Grid.ColumnSpan="2"
+                    Margin="0,0,10,0"
                     VerticalAlignment="Center"
                     Text="Старый пин-код:" />
                 <PasswordBox
@@ -72,7 +74,8 @@
                     Grid.Column="1"
                     Margin="2"
                     Padding="2"
-                    PasswordChanged="InputPasswordChanged" />
+                    PasswordChanged="InputPasswordChanged"
+                    Style="{DynamicResource Password}" />
                 <TextBlock
                     Grid.Row="1"
                     Grid.Column="0"
@@ -84,7 +87,8 @@
                     Grid.Column="1"
                     Margin="2"
                     Padding="2"
-                    PasswordChanged="InputPasswordChanged" />
+                    PasswordChanged="InputPasswordChanged"
+                    Style="{DynamicResource Password}" />
                 <TextBlock
                     Grid.Row="2"
                     Grid.Column="0"
@@ -96,7 +100,8 @@
                     Grid.Column="1"
                     Margin="2"
                     Padding="2"
-                    PasswordChanged="InputPasswordChanged" />
+                    PasswordChanged="InputPasswordChanged"
+                    Style="{DynamicResource Password}" />
                 <StackPanel
                     Grid.Row="3"
                     Grid.Column="1"
@@ -108,14 +113,16 @@
                         Padding="4"
                         HorizontalAlignment="Right"
                         Click="CancelClick"
-                        Content="Отмена" />
+                        Content="Отмена"
+                        Style="{DynamicResource BasicButton}" />
                     <Button
                         x:Name="SaveMasterBtn"
                         Padding="4"
                         HorizontalAlignment="Right"
                         Click="SaveMasterClick"
                         Content="Сохранить"
-                        IsEnabled="False" />
+                        IsEnabled="False"
+                        Style="{DynamicResource BasicButton}" />
                 </StackPanel>
             </Grid>
         </Border>
@@ -137,13 +144,14 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <TextBlock
-                    Grid.ColumnSpan="2"
+                    Margin="0,0,10,0"
                     VerticalAlignment="Center"
                     Text="Ссылка:" />
                 <TextBox
                     Grid.Column="1"
                     Margin="2"
                     Padding="2"
+                    Style="{DynamicResource TextBoxStyle}"
                     Text="{Binding NewItem.Value.Link, UpdateSourceTrigger=PropertyChanged}"
                     TextChanged="ValidateInput" />
                 <TextBlock
@@ -156,6 +164,7 @@
                     Grid.Column="1"
                     Margin="2"
                     Padding="2"
+                    Style="{DynamicResource TextBoxStyle}"
                     Text="{Binding NewItem.Value.Login, UpdateSourceTrigger=PropertyChanged}"
                     TextChanged="ValidateInput" />
                 <TextBlock
@@ -168,6 +177,7 @@
                     Grid.Column="1"
                     Margin="2"
                     Padding="2"
+                    Style="{DynamicResource TextBoxStyle}"
                     Text="{Binding NewItem.Value.Password, UpdateSourceTrigger=PropertyChanged}"
                     TextChanged="ValidateInput" />
                 <StackPanel
@@ -181,25 +191,33 @@
                         Padding="4"
                         HorizontalAlignment="Right"
                         Click="CancelClick"
-                        Content="Отмена" />
+                        Content="Отмена"
+                        Style="{DynamicResource BasicButton}" />
                     <Button
                         x:Name="SaveBtn"
                         Padding="4"
                         HorizontalAlignment="Right"
                         Click="SaveClick"
                         Content="Сохранить"
-                        IsEnabled="False" />
+                        IsEnabled="False"
+                        Style="{DynamicResource BasicButton}" />
                 </StackPanel>
             </Grid>
         </Border>
-        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
+        <ScrollViewer
+            Grid.Row="2"
+            Margin="0,0,0,5"
+            Style="{DynamicResource ScrollViewerStyle}"
+            VerticalScrollBarVisibility="Visible">
             <ItemsControl ItemsSource="{Binding Items}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate DataType="{x:Type c:ItemModel}">
                         <Border
-                            Margin="5"
-                            Padding="5"
-                            Background="#eeeeee">
+                            Margin="5,0,0,5"
+                            Background="{DynamicResource Button.Static.Background}"
+                            BorderBrush="{DynamicResource TextBox.Static.Border}"
+                            BorderThickness="1"
+                            CornerRadius="5">
                             <Border.ContextMenu>
                                 <ContextMenu>
                                     <MenuItem
@@ -220,47 +238,71 @@
                                         Tag="CopyP" />
                                 </ContextMenu>
                             </Border.ContextMenu>
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
+                            <Grid Height="32">
                                 <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="32" />
+                                    <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="auto" />
-                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="32" />
                                 </Grid.ColumnDefinitions>
+                                <Label>
+                                    <Label.Content>
+                                        <Path
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Data="M16.5 9C16.5 11.2091 14.7091 13 12.5 13C10.2909 13 8.5 11.2091 8.5 9C8.5 6.79086 10.2909 5 12.5 5C13.5609 5 14.5783 5.42143 15.3284 6.17157C16.0786 6.92172 16.5 7.93913 16.5 9Z M5.5 18.9999C9.78787 16.3408 15.2121 16.3408 19.5 18.9999"
+                                            Style="{DynamicResource Icon}" />
+                                    </Label.Content>
+                                </Label>
                                 <TextBlock
-                                    Grid.ColumnSpan="2"
-                                    Margin="10,0"
-                                    FontSize="16"
-                                    Text="{Binding Link}" />
+                                    Grid.Column="1"
+                                    Margin="5,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="18"
+                                    Text="{Binding Link}"
+                                    TextDecorations="Underline" />
                                 <Border
-                                    Grid.Row="1"
-                                    Grid.ColumnSpan="2"
-                                    Height="2"
-                                    Margin="4"
-                                    Background="Black" />
-                                <TextBlock
-                                    Grid.Row="2"
-                                    Grid.Column="0"
-                                    Margin="10,0"
-                                    Text="Логин:" />
-                                <TextBlock
-                                    Grid.Row="2"
-                                    Grid.Column="1"
-                                    Text="********" />
+                                    Grid.Column="2"
+                                    Padding="10,0"
+                                    Background="{DynamicResource TextBox.Active.Border}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="Логин:" />
+                                        <TextBlock Grid.Column="1" Text="********" />
 
-                                <TextBlock
-                                    Grid.Row="3"
-                                    Grid.Column="0"
-                                    Margin="10,0"
-                                    Text="Пароль:" />
-                                <TextBlock
-                                    Grid.Row="3"
-                                    Grid.Column="1"
-                                    Text="********" />
+                                        <TextBlock
+                                            Grid.Row="1"
+                                            Grid.Column="0"
+                                            Margin="0,0,10,0"
+                                            Text="Пароль:" />
+                                        <TextBlock
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            Text="********" />
+                                    </Grid>
+                                </Border>
+                                <Button
+                                    Grid.Column="3"
+                                    Width="30"
+                                    Height="30"
+                                    Click="ItemMenuClick"
+                                    Style="{DynamicResource TransparentButton}">
+                                    <Button.Content>
+                                        <Path
+                                            Data="M12 12H12.01M12 6H12.01M12 18H12.01M13 12C13 12.5523 12.5523 13 12 13C11.4477 13 11 12.5523 11 12C11 11.4477 11.4477 11 12 11C12.5523 11 13 11.4477 13 12ZM13 18C13 18.5523 12.5523 19 12 19C11.4477 19 11 18.5523 11 18C11 17.4477 11.4477 17 12 17C12.5523 17 13 17.4477 13 18ZM13 6C13 6.55228 12.5523 7 12 7C11.4477 7 11 6.55228 11 6C11 5.44772 11.4477 5 12 5C12.5523 5 13 5.44772 13 6Z"
+                                            Fill="#FF333333"
+                                            Stretch="Uniform"
+                                            Style="{DynamicResource Icon}" />
+                                    </Button.Content>
+                                </Button>
+
                             </Grid>
                         </Border>
                     </DataTemplate>

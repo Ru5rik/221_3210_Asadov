@@ -6,28 +6,20 @@
     StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
-            <Style x:Key="IconButtons" TargetType="Button">
-                <Setter Property="Width" Value="40" />
-                <Setter Property="Height" Value="40" />
-                <Setter Property="Margin" Value="5,0" />
-                <Setter Property="Padding" Value="8" />
-                <Setter Property="HorizontalContentAlignment" Value="Center" />
-                <Setter Property="VerticalContentAlignment" Value="Center" />
-            </Style>
-
-            <Style x:Key="EditorPanel" TargetType="Border">
-                <Setter Property="Margin" Value="5" />
-                <Setter Property="Padding" Value="5" />
-                <Setter Property="Background" Value="LightGray" />
-                <Setter Property="BorderBrush" Value="Black" />
-                <Setter Property="BorderThickness" Value="1" />
-            </Style>
-
-
+            <!--  Colors  -->
+            <SolidColorBrush x:Key="Button.Static.Background" Color="#FFF1F1F1" />
+            <SolidColorBrush x:Key="Button.MouseOver.Background" Color="#FFBCEFB8" />
+            <SolidColorBrush x:Key="Button.Disabled.Background" Color="#FFC8CACF" />
+            <SolidColorBrush x:Key="Border.Active" Color="#FF27C21C" />
+            <SolidColorBrush x:Key="TextBox.Static.Border" Color="#FFABAdB3" />
+            <SolidColorBrush x:Key="TextBox.Active.Border" Color="#FFBCEFB8" />
+            <SolidColorBrush x:Key="Panel.BackGround" Color="#FFF6F6F6" />
+            <SolidColorBrush x:Key="Dark" Color="#FF333333" />
+            <!--  Icons  -->
             <Style x:Key="Icon" TargetType="Path">
-                <Setter Property="Stroke" Value="Black" />
+                <Setter Property="Stroke" Value="#FF333333" />
                 <Setter Property="StrokeThickness" Value="2" />
-                <Setter Property="Stretch" Value="Uniform" />
+                <Setter Property="Stretch" Value="UniformToFill" />
             </Style>
 
             <Path
@@ -40,14 +32,295 @@
                 Style="{StaticResource Icon}" />
             <Path
                 x:Key="Key"
-                Data="M10 14.0505C9.36474 13.4022 8.47934 13 7.5 13C5.567 13 4 14.567 4 16.5C4 18.433 5.567 20 7.5 20C9.433 20 11 18.433 11 16.5C11 15.5463 10.6186 14.6817 10 14.0505ZM10 14.0505L15.0316 9.01891M20.0505 7.99997L18.7576 6.70708C18.3671 6.31655 17.7339 6.31655 17.3434 6.70708L15.0316 9.01891M15.0316 9.01891L17 10.9873"
+                Data="M8.149 17.5467L6.778 18.9217L5 17.1387L11.388 10.7387C10.5317 8.96445 11.0948 6.83093 12.715 5.71029C14.3353 4.58965 16.5303 4.8156 17.8882 6.24281C19.2462 7.67002 19.3628 9.8735 18.1631 11.4361C16.9633 12.9987 14.8045 13.455 13.075 12.5117L9.563 16.0337L11.03 17.5057L9.569 18.9707L8.149 17.5467Z M16.128 7.85071C16.7515 8.47602 16.7506 9.48824 16.1258 10.1124C15.5011 10.7365 14.4889 10.7365 13.8642 10.1124C13.2395 9.48824 13.2385 8.47602 13.862 7.85071C14.4893 7.22864 15.5008 7.22864 16.128 7.85071Z"
                 Style="{StaticResource Icon}" />
-
-            <!--  Шаблон  -->
+            <Path
+                x:Key="ArrowRight"
+                Data="M10 7 L 15 12 L 10 17"
+                Stretch="Uniform"
+                Style="{StaticResource Icon}" />
             <!--<Path
-                x:Key="Plus"
-                Data=""
+                x:Key="ArrowRight"
+                Data="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
                 Style="{StaticResource Icon}" />-->
+
+            <Path
+                x:Key="Person"
+                Data="M16.5 9C16.5 11.2091 14.7091 13 12.5 13C10.2909 13 8.5 11.2091 8.5 9C8.5 6.79086 10.2909 5 12.5 5C13.5609 5 14.5783 5.42143 15.3284 6.17157C16.0786 6.92172 16.5 7.93913 16.5 9Z M5.5 18.9999C9.78787 16.3408 15.2121 16.3408 19.5 18.9999"
+                Style="{StaticResource Icon}" />
+            <Path
+                x:Key="Dots"
+                Data="M12 12H12.01M12 6H12.01M12 18H12.01M13 12C13 12.5523 12.5523 13 12 13C11.4477 13 11 12.5523 11 12C11 11.4477 11.4477 11 12 11C12.5523 11 13 11.4477 13 12ZM13 18C13 18.5523 12.5523 19 12 19C11.4477 19 11 18.5523 11 18C11 17.4477 11.4477 17 12 17C12.5523 17 13 17.4477 13 18ZM13 6C13 6.55228 12.5523 7 12 7C11.4477 7 11 6.55228 11 6C11 5.44772 11.4477 5 12 5C12.5523 5 13 5.44772 13 6Z"
+                Fill="#FF333333"
+                Style="{StaticResource Icon}" />
+            <!--  Buttons  -->
+            <Style x:Key="IconButtons" TargetType="Button">
+                <Setter Property="BorderBrush" Value="{StaticResource TextBox.Static.Border}" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="Background" Value="{StaticResource Button.Static.Background}" />
+                <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                <Setter Property="Width" Value="40" />
+                <Setter Property="Height" Value="40" />
+                <Setter Property="Margin" Value="5,0" />
+                <Setter Property="Padding" Value="8" />
+                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border
+                                x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="5"
+                                SnapsToDevicePixels="true">
+                                <ContentPresenter
+                                    x:Name="contentPresenter"
+                                    Margin="{TemplateBinding Padding}"
+                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                    Focusable="False"
+                                    RecognizesAccessKey="True"
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsDefaulted" Value="true">
+                                    <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource Border.Active}" />
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource Button.MouseOver.Background}" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="true">
+                                    <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource Border.Active}" />
+                                    <Setter TargetName="border" Property="Background" Value="{StaticResource Button.MouseOver.Background}" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="FocusVisual">
+                <Setter Property="Control.Template">
+                    <Setter.Value>
+                        <ControlTemplate>
+                            <Rectangle
+                                Margin="2"
+                                SnapsToDevicePixels="true"
+                                Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"
+                                StrokeDashArray="1 2"
+                                StrokeThickness="1" />
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="BasicButton" TargetType="Button">
+                <Setter Property="BorderBrush" Value="{StaticResource TextBox.Static.Border}" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="Background" Value="{StaticResource Button.Static.Background}" />
+                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border
+                                x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="5"
+                                SnapsToDevicePixels="true">
+                                <ContentPresenter
+                                    x:Name="contentPresenter"
+                                    Margin="{TemplateBinding Padding}"
+                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                    Focusable="False"
+                                    RecognizesAccessKey="True"
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter TargetName="border" Property="Background" Value="{StaticResource Button.Disabled.Background}" />
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource Button.MouseOver.Background}" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="true">
+                                    <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource Border.Active}" />
+                                    <Setter TargetName="border" Property="Background" Value="{StaticResource Button.MouseOver.Background}" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="TransparentButton" TargetType="Button">
+                <Setter Property="Padding" Value="5" />
+                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border
+                                x:Name="border"
+                                Background="Transparent"
+                                BorderBrush="Transparent"
+                                SnapsToDevicePixels="true">
+                                <ContentPresenter
+                                    x:Name="contentPresenter"
+                                    Margin="{TemplateBinding Padding}"
+                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                    Focusable="False"
+                                    RecognizesAccessKey="True"
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter TargetName="border" Property="Opacity" Value="0.6" />
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter TargetName="border" Property="Opacity" Value="0.8" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="true">
+                                    <Setter TargetName="border" Property="Opacity" Value="1" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <!--  Panel  -->
+            <Style x:Key="EditorPanel" TargetType="Border">
+                <Setter Property="Margin" Value="5,0,5,5" />
+                <Setter Property="Padding" Value="10,5" />
+                <Setter Property="Background" Value="{StaticResource Panel.BackGround}" />
+                <Setter Property="BorderBrush" Value="{StaticResource TextBox.Static.Border}" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="CornerRadius" Value="5" />
+            </Style>
+            <!--  Scroll  -->
+            <Style x:Key="ThumbStyle" TargetType="{x:Type Thumb}">
+                <Setter Property="SnapsToDevicePixels" Value="True" />
+                <Setter Property="OverridesDefaultStyle" Value="true" />
+                <Setter Property="Background" Value="{StaticResource Dark}" />
+                <Setter Property="IsTabStop" Value="false" />
+                <Setter Property="Focusable" Value="false" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Thumb}">
+                            <Border Background="{TemplateBinding Background}" CornerRadius="2" />
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="ScrollBarStyle" TargetType="{x:Type ScrollBar}">
+                <Setter Property="Background" Value="{StaticResource TextBox.Static.Border}" />
+                <Setter Property="Width" Value="4" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ScrollBar}">
+                            <Grid
+                                x:Name="Bg"
+                                Width="{TemplateBinding Width}"
+                                SnapsToDevicePixels="true">
+                                <Border Background="{TemplateBinding Background}" CornerRadius="2" />
+                                <Track
+                                    x:Name="PART_Track"
+                                    IsDirectionReversed="true"
+                                    IsEnabled="{TemplateBinding IsMouseOver}">
+                                    <Track.Thumb>
+                                        <Thumb Style="{StaticResource ThumbStyle}" />
+                                    </Track.Thumb>
+                                </Track>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="ScrollViewerStyle" TargetType="{x:Type ScrollViewer}">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ScrollViewer}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="auto" />
+                                </Grid.ColumnDefinitions>
+                                <ScrollContentPresenter
+                                    x:Name="PART_ScrollContentPresenter"
+                                    Grid.Column="0"
+                                    Content="{TemplateBinding Content}" />
+                                <Border Grid.Column="1" />
+                                <ScrollBar
+                                    x:Name="PART_VerticalScrollBar"
+                                    Grid.Column="1"
+                                    AutomationProperties.AutomationId="VerticalScrollBar"
+                                    Maximum="{TemplateBinding ScrollableHeight}"
+                                    Minimum="0"
+                                    Style="{StaticResource ScrollBarStyle}"
+                                    ViewportSize="{TemplateBinding ViewportHeight}"
+                                    Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+                                    Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsEnabled" Value="false">
+                        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <!--  TextBoxBase  -->
+            <ControlTemplate x:Key="TextBoxBaseTemplate">
+                <Border
+                    x:Name="border"
+                    Padding="5,0"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="5"
+                    SnapsToDevicePixels="True">
+                    <ScrollViewer
+                        x:Name="PART_ContentHost"
+                        Focusable="false"
+                        HorizontalScrollBarVisibility="Hidden"
+                        VerticalScrollBarVisibility="Hidden" />
+                </Border>
+                <ControlTemplate.Triggers>
+                    <Trigger Property="IsEnabled" Value="false">
+                        <Setter TargetName="border" Property="Opacity" Value="0.56" />
+                    </Trigger>
+                    <Trigger Property="IsMouseOver" Value="true">
+                        <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource TextBox.Active.Border}" />
+                    </Trigger>
+                    <Trigger Property="IsKeyboardFocused" Value="true">
+                        <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource Border.Active}" />
+                    </Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
+
+            <!--  PasswordBox  ●  -->
+            <Style x:Key="Password" TargetType="{x:Type PasswordBox}">
+                <Setter Property="PasswordChar" Value="#" />
+                <Setter Property="MaxLength" Value="4" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="HorizontalContentAlignment" Value="Left" />
+                <Setter Property="Template" Value="{StaticResource TextBoxBaseTemplate}" />
+            </Style>
+
+            <!--  Search  -->
+            <Style x:Key="TextBoxStyle" TargetType="{x:Type TextBox}">
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="HorizontalContentAlignment" Value="Left" />
+                <Setter Property="AllowDrop" Value="true" />
+                <Setter Property="Template" Value="{StaticResource TextBoxBaseTemplate}" />
+            </Style>
+
+
 
         </ResourceDictionary>
     </Application.Resources>
