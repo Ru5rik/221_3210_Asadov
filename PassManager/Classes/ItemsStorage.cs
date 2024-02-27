@@ -1,4 +1,4 @@
-﻿//#define CRYPT
+﻿#define CRYPT
 
 using System.IO;
 using System.Text.Json;
@@ -7,6 +7,7 @@ namespace PassManager.Classes
 {
 	public class ItemsStorage
 	{
+		public bool IsAuth;
 		private const string _path = "managerData.json";
 		public List<ItemModel> Items { get; set; }
 		public ItemsStorage()
@@ -25,6 +26,8 @@ namespace PassManager.Classes
 					string json = File.ReadAllText(_path);
 #endif
 					Items.AddRange(JsonSerializer.Deserialize<List<ItemModel>>(json));
+
+
 				}
 				catch (Exception)
 				{
@@ -34,11 +37,14 @@ namespace PassManager.Classes
 		}
 		public void Save()
 		{
-			string json = JsonSerializer.Serialize(Items);
-			File.WriteAllText(_path, json);
+			if (IsAuth)
+			{
+				string json = JsonSerializer.Serialize(Items);
+				File.WriteAllText(_path, json);
 #if CRYPT
 			File.WriteAllBytes("e_" + _path + ".dat", SecurityManager.Encrypt(Properties.Settings.Default.Master, json));
 #endif
+			}
 		}
 	}
 }

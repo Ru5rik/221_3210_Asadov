@@ -35,6 +35,6 @@ namespace PassManager.Classes
 		{
 			return SecurityManager.Decrypt(Link, EncryptedPassword);
 		}
-		
+
 	}
 }

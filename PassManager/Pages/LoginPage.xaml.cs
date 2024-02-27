@@ -26,6 +26,7 @@ namespace PassManager.Pages
 		{
 			if (PassBox.Password == Properties.Settings.Default.Master)
 			{
+				_storage.IsAuth = true;
 				ViewUtils.MainFrame.Navigate(new StoragePage(_storage));
 			}
 			else
