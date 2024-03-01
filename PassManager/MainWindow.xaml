@@ -8,6 +8,8 @@
     Title="Password manager"
     Width="800"
     Height="450"
+    MinWidth="600"
+    MinHeight="400"
     mc:Ignorable="d">
     <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" />
 </Window>

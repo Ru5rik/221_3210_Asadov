@@ -12,6 +12,11 @@ namespace PassManager.Classes
 		{
 			Items = new List<ItemModel>();
 		}
+		public void Unload()
+		{
+			IsAuth = false;
+			Items.Clear();
+		}
 		public void Load()
 		{
 			if (File.Exists(_path))

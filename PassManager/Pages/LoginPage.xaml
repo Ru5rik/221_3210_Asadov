@@ -12,7 +12,7 @@
     <Grid>
         <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
             <Grid.RowDefinitions>
-                <RowDefinition />
+                <RowDefinition Height="1*" />
                 <RowDefinition />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
@@ -24,23 +24,16 @@
                 x:Name="PassBox"
                 Width="200"
                 Height="30"
-                Margin="5,0,0,0"
                 VerticalContentAlignment="Center"
                 FontWeight="Bold"
+                KeyDown="PassBoxKeyDown"
+                MaxLength="4"
                 Style="{DynamicResource Password}" />
-            <Button
-                Grid.Column="1"
-                Height="30"
-                Click="ButtonClick"
-                Content="{DynamicResource ArrowRight}"
-                IsDefault="True"
-                Style="{DynamicResource IconButtons}"
-                ToolTip="Войти" />
 
             <Border
                 Grid.Row="1"
                 Grid.ColumnSpan="2"
-                Margin="5"
+                Margin="0,5"
                 Background="#64FF0000"
                 BorderBrush="Red"
                 BorderThickness="2"

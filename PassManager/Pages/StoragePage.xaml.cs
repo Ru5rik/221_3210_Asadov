@@ -15,7 +15,6 @@ namespace PassManager.Pages
 		public ObservableCollection<ItemModel> Items { get; set; }
 		public ObservableObject<string> Link { get; set; }
 		public ObservableObject<string> Login { get; set; }
-		public ObservableObject<string> Password { get; set; }
 
 		private ItemModel _item;
 		/// <summary>
@@ -30,7 +29,6 @@ namespace PassManager.Pages
 
 			Link = new(string.Empty);
 			Login = new(string.Empty);
-			Password = new(string.Empty);
 
 			Items = new ObservableCollection<ItemModel>();
 			_storage.Items.ForEach(Items.Add);
@@ -55,7 +53,7 @@ namespace PassManager.Pages
 		{
 			Link.Value = string.Empty;
 			Login.Value = string.Empty;
-			Password.Value = string.Empty;
+			ItemPass.Password = string.Empty;
 		}
 		/// <summary>
 		/// Отображение панели для добавления нового пароля.
@@ -79,7 +77,7 @@ namespace PassManager.Pages
 				MessageBox.Show("Новый пароль добавлен", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
 
 				ItemModel item = new ItemModel();
-				item.Set(Link.Value, Login.Value, Password.Value);
+				item.Set(Link.Value, Login.Value, ItemPass.Password);
 
 				_storage.Items.Add(item);
 				Items.Add(item);
@@ -88,7 +86,7 @@ namespace PassManager.Pages
 			{
 				MessageBox.Show("Данные обновлены", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
 
-				_item.Set(Link.Value, Login.Value, Password.Value);
+				_item.Set(Link.Value, Login.Value, ItemPass.Password);
 
 				int index = Items.IndexOf(_item);
 				Items.RemoveAt(index);
@@ -115,7 +113,7 @@ namespace PassManager.Pages
 		/// </summary>
 		private void ValidateInput(object sender, TextChangedEventArgs e)
 		{
-			if (string.IsNullOrEmpty(Link.Value) && string.IsNullOrEmpty(Login.Value) && string.IsNullOrEmpty(Password.Value))
+			if (string.IsNullOrEmpty(Link.Value) || string.IsNullOrEmpty(Login.Value) || string.IsNullOrEmpty(ItemPass.Password))
 			{
 				SaveBtn.IsEnabled = false;
 			}
@@ -178,12 +176,27 @@ namespace PassManager.Pages
 			Properties.Settings.Default.Master = NewPass.Password;
 			Properties.Settings.Default.Save();
 		}
+		private void LogoutClick(object sender, RoutedEventArgs e)
+		{
+			_storage.Unload();
+			ViewUtils.MainFrame.GoBack();
+		}
 		/// <summary>
 		/// Проверка пин кода.
 		/// </summary>
 		private void InputPasswordChanged(object sender, RoutedEventArgs e)
 		{
-			if (OldPass.Password == NewPass.Password && string.IsNullOrWhiteSpace(OldPass.Password) && string.IsNullOrWhiteSpace(NewPass.Password) && NewPass.Password != NewPassSecond.Password)
+			string tag = ((PasswordBox)sender).Tag.ToString();
+			if (tag == "item" && (string.IsNullOrEmpty(Link.Value) || string.IsNullOrEmpty(Login.Value) || string.IsNullOrEmpty(ItemPass.Password)))
+			{
+				SaveBtn.IsEnabled = false;
+			}
+			else
+			{
+				SaveBtn.IsEnabled = true;
+			}
+			if (OldPass.Password == NewPass.Password && OldPass.Password != Properties.Settings.Default.Master &&
+				string.IsNullOrWhiteSpace(OldPass.Password) && string.IsNullOrWhiteSpace(NewPass.Password) && NewPass.Password != NewPassSecond.Password)
 			{
 				SaveMasterBtn.IsEnabled = false;
 			}
