@@ -13,8 +13,11 @@ namespace PassManager.Pages
 	{
 		private readonly ItemsStorage _storage;
 		public ObservableCollection<ItemModel> Items { get; set; }
-		public ObservableObject<ItemModel> NewItem { get; set; }
-		private ItemModel editable;
+		public ObservableObject<string> Link { get; set; }
+		public ObservableObject<string> Login { get; set; }
+		public ObservableObject<string> Password { get; set; }
+
+		private ItemModel _item;
 		/// <summary>
 		/// Конструктор страницы с паролями. Принимает объект хранилища.
 		/// </summary>
@@ -24,9 +27,12 @@ namespace PassManager.Pages
 			InitializeComponent();
 			_storage = storage;
 			_storage.Load();
-			Items = new ObservableCollection<ItemModel>();
-			NewItem = new ObservableObject<ItemModel>(new ItemModel());
 
+			Link = new(string.Empty);
+			Login = new(string.Empty);
+			Password = new(string.Empty);
+
+			Items = new ObservableCollection<ItemModel>();
 			_storage.Items.ForEach(Items.Add);
 
 			DataContext = this;
@@ -45,6 +51,12 @@ namespace PassManager.Pages
 				_storage.Items.ForEach(Items.Add);
 			}
 		}
+		private void ClearForm()
+		{
+			Link.Value = string.Empty;
+			Login.Value = string.Empty;
+			Password.Value = string.Empty;
+		}
 		/// <summary>
 		/// Отображение панели для добавления нового пароля.
 		/// </summary>
@@ -53,7 +65,7 @@ namespace PassManager.Pages
 			MasterEditor.Visibility = Visibility.Collapsed;
 			EditorGrid.Visibility = Visibility.Visible;
 
-			NewItem.Value = new ItemModel();
+			ClearForm();
 		}
 		/// <summary>
 		/// Добавление нового пароля в хранилище.
@@ -62,28 +74,29 @@ namespace PassManager.Pages
 		{
 			EditorGrid.Visibility = Visibility.Collapsed;
 
-			if (editable != null)
-			{
-				MessageBox.Show("Данные обновлены", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
-
-				editable.Copy(NewItem.Value); // fix
-				int index = Items.IndexOf(editable);
-				Items.RemoveAt(index);
-				Items.Insert(index, editable);
-
-				editable = null;
-			}
-			else
+			if (_item == null)
 			{
 				MessageBox.Show("Новый пароль добавлен", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
 
 				ItemModel item = new ItemModel();
-				item.Copy(NewItem.Value);
+				item.Set(Link.Value, Login.Value, Password.Value);
 
 				_storage.Items.Add(item);
 				Items.Add(item);
 			}
-			NewItem.Value.Clear();
+			else
+			{
+				MessageBox.Show("Данные обновлены", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+
+				_item.Set(Link.Value, Login.Value, Password.Value);
+
+				int index = Items.IndexOf(_item);
+				Items.RemoveAt(index);
+				Items.Insert(index, _item);
+
+				_item = null;
+			}
+			ClearForm();
 		}
 		/// <summary>
 		/// Закрывает панели редактирования. 
@@ -102,13 +115,13 @@ namespace PassManager.Pages
 		/// </summary>
 		private void ValidateInput(object sender, TextChangedEventArgs e)
 		{
-			if (NewItem.Value.IsValidate)
+			if (string.IsNullOrEmpty(Link.Value) && string.IsNullOrEmpty(Login.Value) && string.IsNullOrEmpty(Password.Value))
 			{
-				SaveBtn.IsEnabled = true;
+				SaveBtn.IsEnabled = false;
 			}
 			else
 			{
-				SaveBtn.IsEnabled = false;
+				SaveBtn.IsEnabled = true;
 			}
 		}
 		/// <summary>
@@ -123,9 +136,8 @@ namespace PassManager.Pages
 			{
 				case "Edit":
 					EditorGrid.Visibility = Visibility.Visible;
-					editable = item;
-					NewItem.Value.Copy(editable);
-					NewItem.OnPropChanged("Value");
+					_item = item;
+					Link.Value = _item.Link;
 					break;
 				case "Remove":
 
@@ -136,7 +148,6 @@ namespace PassManager.Pages
 						_storage.Items.Remove(item);
 						Items.Remove(item);
 						MessageBox.Show("Пароль удален", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
-
 					}
 					break;
 				case "CopyL":
@@ -172,13 +183,13 @@ namespace PassManager.Pages
 		/// </summary>
 		private void InputPasswordChanged(object sender, RoutedEventArgs e)
 		{
-			if (OldPass.Password != NewPass.Password && !string.IsNullOrWhiteSpace(OldPass.Password) && !string.IsNullOrWhiteSpace(NewPass.Password) && NewPass.Password == NewPassSecond.Password)
+			if (OldPass.Password == NewPass.Password && string.IsNullOrWhiteSpace(OldPass.Password) && string.IsNullOrWhiteSpace(NewPass.Password) && NewPass.Password != NewPassSecond.Password)
 			{
-				SaveMasterBtn.IsEnabled = true;
+				SaveMasterBtn.IsEnabled = false;
 			}
 			else
 			{
-				SaveMasterBtn.IsEnabled = false;
+				SaveMasterBtn.IsEnabled = true;
 			}
 		}
 

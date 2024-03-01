@@ -305,7 +305,7 @@
 
             <!--  PasswordBox  ●  -->
             <Style x:Key="Password" TargetType="{x:Type PasswordBox}">
-                <Setter Property="PasswordChar" Value="#" />
+                <Setter Property="PasswordChar" Value="☺" />
                 <Setter Property="MaxLength" Value="4" />
                 <Setter Property="BorderThickness" Value="1" />
                 <Setter Property="HorizontalContentAlignment" Value="Left" />
