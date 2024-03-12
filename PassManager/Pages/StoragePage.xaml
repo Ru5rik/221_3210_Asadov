@@ -83,6 +83,7 @@
                     Grid.Column="1"
                     Margin="2"
                     Padding="2"
+                    MaxLength="4"
                     PasswordChanged="InputPasswordChanged"
                     Style="{DynamicResource Password}" />
                 <TextBlock

@@ -1,11 +1,16 @@
 ﻿using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using System.Windows.Input;
 
 namespace PassManager.Classes
 {
 	public static class SecurityManager
 	{
+		public static byte[] Recrypt(string oldKey, string newKey, byte[] value)
+		{
+			return Encrypt(newKey, Decrypt(oldKey, value));
+		}
 		private static byte[] GetStingHash(string key)
 		{
 			return SHA256.HashData(Encoding.UTF8.GetBytes(key));
@@ -39,6 +44,8 @@ namespace PassManager.Classes
 		}
 		public static string Decrypt(string key, byte[] value)
 		{
+			File.WriteAllText("bytes.txt", Convert.ToHexString(value));
+
 			byte[] keyBytes = GetStingHash(key);
 			byte[] vectorBytes = keyBytes.Take(16).ToArray();
 
@@ -62,6 +69,7 @@ namespace PassManager.Classes
 					}
 				}
 			}
+			File.WriteAllText("dec.txt", decrypted);
 
 			return decrypted;
 		}

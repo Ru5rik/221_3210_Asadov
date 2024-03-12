@@ -76,22 +76,16 @@ namespace PassManager.Pages
 			{
 				MessageBox.Show("Новый пароль добавлен", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
 
-				ItemModel item = new ItemModel();
-				item.Set(Link.Value, Login.Value, ItemPass.Password);
-
-				_storage.Items.Add(item);
-				Items.Add(item);
+				Items.Add(_storage.SetItem(null, Link.Value, Login.Value, ItemPass.Password));
 			}
 			else
 			{
 				MessageBox.Show("Данные обновлены", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
 
-				_item.Set(Link.Value, Login.Value, ItemPass.Password);
-
-				int index = Items.IndexOf(_item);
+				var item = _storage.SetItem(_item, Link.Value, Login.Value, ItemPass.Password);
+				int index = Items.IndexOf(item);
 				Items.RemoveAt(index);
-				Items.Insert(index, _item);
-
+				Items.Insert(index, item);
 				_item = null;
 			}
 			ClearForm();
@@ -149,10 +143,10 @@ namespace PassManager.Pages
 					}
 					break;
 				case "CopyL":
-					Clipboard.SetText(item.GetLogin());
+					_storage.CopyLogin(item);
 					break;
 				case "CopyP":
-					Clipboard.SetText(item.GetPassword());
+					_storage.CopyPassword(item);
 					break;
 				default:
 					break;
@@ -173,8 +167,7 @@ namespace PassManager.Pages
 		{
 			MasterEditor.Visibility = Visibility.Collapsed;
 			MessageBox.Show("Пин-код обновлен", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
-			Properties.Settings.Default.Master = NewPass.Password;
-			Properties.Settings.Default.Save();
+			_storage.ChangeMasterKey(NewPass.Password);
 		}
 		private void LogoutClick(object sender, RoutedEventArgs e)
 		{
@@ -186,7 +179,8 @@ namespace PassManager.Pages
 		/// </summary>
 		private void InputPasswordChanged(object sender, RoutedEventArgs e)
 		{
-			string tag = ((PasswordBox)sender).Tag.ToString();
+			PasswordBox pb = sender as PasswordBox;
+			string tag = pb.Tag == null ? string.Empty : pb.Tag.ToString();
 			if (tag == "item" && (string.IsNullOrEmpty(Link.Value) || string.IsNullOrEmpty(Login.Value) || string.IsNullOrEmpty(ItemPass.Password)))
 			{
 				SaveBtn.IsEnabled = false;
@@ -195,8 +189,8 @@ namespace PassManager.Pages
 			{
 				SaveBtn.IsEnabled = true;
 			}
-			if (OldPass.Password == NewPass.Password && OldPass.Password != Properties.Settings.Default.Master &&
-				string.IsNullOrWhiteSpace(OldPass.Password) && string.IsNullOrWhiteSpace(NewPass.Password) && NewPass.Password != NewPassSecond.Password)
+			if (OldPass.Password == NewPass.Password || OldPass.Password != Properties.Settings.Default.Master ||
+				string.IsNullOrWhiteSpace(OldPass.Password) || string.IsNullOrWhiteSpace(NewPass.Password) || NewPass.Password != NewPassSecond.Password)
 			{
 				SaveMasterBtn.IsEnabled = false;
 			}
