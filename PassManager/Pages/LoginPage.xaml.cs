@@ -1,6 +1,7 @@
 ﻿using PassManager.Classes;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace PassManager.Pages
 {
@@ -21,19 +22,29 @@ namespace PassManager.Pages
 
 			DataContext = this;
 		}
-
-		private void ButtonClick(object sender, RoutedEventArgs e)
+		private void PassBoxKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
 		{
-			if (PassBox.Password == Properties.Settings.Default.Master)
+			if (e.Key == Key.Return)
 			{
-				_storage.IsAuth = true;
-				ViewUtils.MainFrame.Navigate(new StoragePage(_storage));
-			}
-			else
-			{
-				ErrorBlock.Value = Visibility.Visible;
+				if (PassBox.Password == Properties.Settings.Default.Master)
+				{
+					_storage.IsAuth = true;
+					ViewUtils.MainFrame.Navigate(new StoragePage(_storage));
+				}
+				else
+				{
+					ShowError();
+				}
 			}
 		}
+		private void ShowError()
+		{
+			ErrorBlock.Value = Visibility.Visible;
 
-	}
+			Task.Run(async () => {
+				await Task.Delay(3000);
+				ErrorBlock.Value = Visibility.Collapsed;
+			});
+		}
+    }
 }
